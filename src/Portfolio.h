@@ -2,6 +2,7 @@
 #define PORTFOLIO_H
 
 #include <vector>
+#include <string>
 #include "stock.h"
 
 class Portfolio{
