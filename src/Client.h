@@ -2,36 +2,29 @@
 #define CLIENT_H
 
 #include <iostream>
-#include <string>
+#include <vector>
 #include "portfolio.h"
 
 class Client{
+private:
     std::string name;
     int id;
-
-    Portfolio* portfolios;
-    int portfolioCount;
-    int capacity;
+    std::vector<Portfolio> portfolios;
 
 public:
-    Client(std::string& name, int id, int capacity);
+    Client(std::string name, int id);
     ~Client();
 
-    // portfolio management
-    void createPortfolio(std::string portfolioName);
-    void deletePortfolio(int portfolioIndex);
+    // Portfolio Ops
+    void createPortfolio(const std::string& portfolioName);
+    void deletePortfolio(const std::string& portfolioName);
 
-    // stock ops
-    void addStockToPortfolio(int portfolioIndex, const std::string& ticker, int numofShares, double avgSharePrice);
-    void modifyStockInPortfolio(int portfolioIndex, const std::string& ticker, int numofShares, double avgSharePrice);
-    void addStockToPortfolio(int portfolioIndex, int stockIndex);
+    // interact directly w portfolio
+    Portfolio* getPortfolio(const std::string& portfolioName)
 
-    void veiwAllPortfolios() const;
-    void update:AllPortfolioPrices(); 
+    void veiwAllPortfolios();
 
     //getters
-    int getPortfolioCount() const;
-    Portfolio* getPortfolios() const;
     std::string getName() const;
     int getId() const;
 };
