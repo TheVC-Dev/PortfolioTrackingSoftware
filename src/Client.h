@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include "portfolio.h"
+#include <string>
+#include "Portfolio.h"
 
 class Client{
 private:
@@ -20,9 +21,9 @@ public:
     void deletePortfolio(const std::string& portfolioName);
 
     // interact directly w portfolio
-    Portfolio* getPortfolio(const std::string& portfolioName)
+    Portfolio* getPortfolio(const std::string& portfolioName);
 
-    void veiwAllPortfolios();
+    void viewAllPortfolios();
 
     //getters
     std::string getName() const;
