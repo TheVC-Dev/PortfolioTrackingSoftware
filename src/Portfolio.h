@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "stock.h"
+#include "Stock.h"
 
 class Portfolio{
 private:
@@ -24,7 +24,7 @@ public:
     double getTotalPortfolioValue();
     void displayPortfolio();
 
-    const std::vector<stock>& getStocks() const;
+    const std::vector<Stock>& getStocks() const;
 };
 
 #endif

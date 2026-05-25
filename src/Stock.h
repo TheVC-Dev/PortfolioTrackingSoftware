@@ -19,7 +19,7 @@ private:
 
 public:
     Stock(std::string ticker, int numOfShares, double avgSharesPrice);
-    ~Stock()
+    ~Stock();
 
     void ensurePriceLoaded();
     void refreshPrice();

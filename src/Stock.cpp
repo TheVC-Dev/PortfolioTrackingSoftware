@@ -1,11 +1,11 @@
-#include "stock.h"
-#include <curl/curl.h>
-#include <nlohmann/json.hpp>
+#include "Stock.h"
+#include <iostream>
+//#include <curl/curl.h>
+//#include <nlohmann/json.hpp>
 
-using json = nlohmann::json;
+//using json = nlohmann::json;
 
 int Stock::diversificationCount = 0;
-
 
 // helper to hanfle the data stream from the curl
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s){
@@ -14,8 +14,8 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s){
     return newLength;
 }
 
-Stock::Stock(std::string ticker, double stockCount, int avgSharePrice)
-    :ticker(ticker), avgSharePrice(avgSharePrice), stockCount(stockCount), currSharePrice(0.0), totalValue(0.0), valueChange(0.0), lastUpdateTime(0), PriceInitialized(false){
+Stock::Stock(std::string ticker, int NumOfShares, double avgSharePrice)
+    :ticker(ticker), avgSharePrice(avgSharePrice), currSharePrice(0.0), lastUpdateTime(0), priceInitialized(false){
         diversificationCount++;
     }
 Stock::~Stock(){
@@ -23,27 +23,17 @@ Stock::~Stock(){
 }
 
 //lazy load helpers
-void Stock::ensurePriceLoaded({
-    if (!priceInitialized || isCacheExpired()){
+void Stock::ensurePriceLoaded(){
+    if(!priceInitialized || isCacheExpired()){
         refreshPrice();
     }
-}
-
-time_t Stock::getLastUpdateTime(){
-    return lastUpdateTime;
-}
-
-bool Stock::isPriceInitialized() const {
-    return priceInitialized;
-}
-
-bool Stock::isCacheExpired() const{
-    return (std::time(nullptr) - lastUpdateTime) > CACHE_DURATION_SEC;
 }
 
 
 //API call 
 void Stock::refreshPrice(){
+    /*
+     * TODO:
     CURL* curl = curl_easy_init();
     if(curl){
         std::string readBuffer;
@@ -68,48 +58,64 @@ void Stock::refreshPrice(){
         priceInitialized = true;
 
     }
+    */
 }
 
-void Stock::calcTotalValue(){
-    totalValue = currPrice * stockCount;
+bool Stock::isPriceInitialized() const {
+    return priceInitialized;
 }
 
-int Stock::getStockinPortfolioNum(){
-    return stocksinPortfolioNum;
+bool Stock::isCacheExpired() const{
+    return (std::time(nullptr) - lastUpdateTime) > CACHE_DURATION_SEC;
 }
 
-std::string Stock::getTicker(){
-    return ticker;
-}
-double Stock::getAvgStockPrice(){
-    return avgStockPrice;
-}
+// getters ////////////////
 
-int Stock::getStockCount(){
-    return stockCount;
+double Stock::getTotalValue(){
+    return 0.0;
 }
 
 double Stock::getValueChange(){
-    ensurePriceLoaded();
-    return (currSharePrice - avgSharePrice) * stockCount;
+    //TODO:
+    //ensurePriceLoaded();
+    //return (currSharePrice - avgSharePrice) * stockCount;
+    return 0.0;
 }
 
 double Stock::getPercentChange(){
-    ensurePriceLoaded()
-    return (currSharePrice/avgSharePrice) - 1;
+    //TODO:
+    //ensurePriceLoaded()
+    //return (currSharePrice/avgSharePrice) - 1;
+    return 0.0;
 }
 
-//TODO: void setNumOfShares(int), void setAvgShare(double)
+std::string Stock::getTicker() const {
+    return ticker;
+}
 
-void Stock::display() const{
+int Stock::getNumOfShares() const {
+    return numOfShares;
+}
+
+double Stock::getAvgSharePrice() const {
+    return avgSharePrice;
+}
+
+double Stock::getCurrSharePrice(){
+    return 0.0;
+}
+
+//setters ////////////////
+void Stock::setNumOfShares(int shares) {
+    (void)shares;
+}
+
+void Stock::setAvgShare(double price){
+    (void)price;
+}
+
+
+void Stock::display(){
     ensurePriceLoaded();
     std::cout << "Ticker: " << getTicker() << std::endl;
-    std::cout << "Average Stock Price: " << getAvgStockPrice() << std::endl;
-    std::cout << "Stock Count: " << getStockCount() << std::endl;
-    std::cout << "Total Value: " << calcTotalValue() << std::endl;
-    std::cout << "Value Change: " << getValueChange() << std::endl;
-    std::cout << "Percent Change: " << getPercentChange() << std::endl;
-}
-
-
-
+};
